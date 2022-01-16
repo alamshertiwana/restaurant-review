@@ -149,3 +149,10 @@ p.restaurant-address {
       margin-top: 100px;
   }
 }
+
+header .logo {
+  font-family: 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  font-weight: 900;
+  font-size: 20px;
+}
