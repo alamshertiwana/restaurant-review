@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- Custom Styles -->
+    <link href="assets/css/style.css" rel="stylesheet">    
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <title>Restaurant Review</title>
+  </head>
+  <body class="add-restaurant">
+
+  <div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+      <a href="index.html" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+        Restaurant Reviews
+      </a>
+
+      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="index.html" class="nav-link px-2 link-dark">Home</a></li>
+        <li><a href="top-restaurants.html" class="nav-link px-2 link-dark">Top Restaurants</a></li>
+      </ul>
+
+      <div class="col-md-3 text-end">
+        <a id="header_login_link" href="login.html" type="button" class="btn btn-outline-primary me-2">Login</a>
+        <a id="header_my_account_link" href="my-account.html" type="button" class="btn btn-outline-primary me-2 d-none">My Account</a>
+        <a id="header_signup_link" type="button" class="btn btn-primary">Sign-up</a>
+        <a id="header_admin_link" href="add-restaurant.html" type="button" class="btn btn-primary d-none">Admin</a>
+        <a id="header_logout_link" type="button" class="btn btn-primary d-none">Logout</a>
+      </div>
+    </header>
+  </div>
+
+  <div class="container">
+    <div class="row">
+
+      <div class="col-sm-2 account-sidebar">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="add-restaurant.html">Add Restaurant</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="hide-restaurant.html">Hide Restaurant</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="delete-review.html">Delete Review</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-sm-10 account-details px-4">
+        <h3>Add Restaurant</h3>
+        <form id="restaurant-form" >
+
+          <div class="mb-3">
+            <label for="restaurant_name" class="form-label">Name</label>
+            <input id="restaurant_name" type="text" class="form-control">
+          </div>
+          
+          <div class="mb-3">
+            <label for="restaurant_address" class="form-label">Address</label>
+            <input id="restaurant_address" type="text" class="form-control">
+          </div>          
+
+          <label for="type_service" class="form-label">Type of Service</label>
+          <select id="type_service" class="form-select mb-3">
+            <option selected disabled="disabled" value="">Type of Service</option>
+            <option value="fast">Fast Food</option>
+            <option value="carte">A la Carte</option>
+            <option value="dhote">Table d’hote</option>
+          </select>
+
+          <label for="type_food" class="form-label">Type of Food</label>                    
+          <select id="type_food" class="form-select mb-3">
+            <option selected disabled="disabled" value="">Type of Food</option>
+            <option value="Asian">Asian</option>
+            <option value="Carribean">Carribean</option>
+            <option value="Oriental">Oriental</option>
+            <option value="Italian">Italian</option>
+            <option value="American">American</option>
+          </select>
+
+          <label for="occasion" class="form-label">Occasion</label>
+          <select id="occasion" class="form-select mb-3">
+            <option selected disabled="disabled" value="">Occasion</option>
+            <option value="Family">Family Meal</option>
+            <option value="Romantic">Romantic Dinner</option>
+            <option value="Kids">Kids Meal</option>
+            <option value="Business">Business Lunches</option>
+            <option value="Views">Views</option>
+          </select>
+
+          <label for="dining_option" class="form-label">Dining Options</label>
+          <select id="dining_option" class="form-select mb-3" multiple >
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+            <option value="Supper">Supper</option>
+            <option value="Tea">Tea</option>
+          </select>
+          <div class="form-text">Hold Ctrl or Cmd key to select multiple dining options.</div>
+
+
+          <div class="mb-3">
+            <label for="average_expense" class="form-label">Average Expense</label>
+            <input type="number" class="form-control" id="average_expense" min="1">
+          </div>
+
+          <label for="qualtiy_food" class="form-label">Quality of Food</label>
+          <select id="qualtiy_food" class="form-select mb-3">
+            <option selected disabled="disabled" value="">Quality of Food</option>
+            <option value="Excellent">Excellent</option>
+            <option value="Good">Good</option>
+            <option value="Fine">Fine</option>
+            <option value="Poor">Poor</option>
+          </select>          
+
+          <label for="ambiance" class="form-label">Ambiance of Experience</label>
+          <select id="ambiance" class="form-select mb-3">
+            <option selected disabled="disabled" value="">Ambiance</option>
+            <option value="Neutral">Neutral</option>
+            <option value="Romantic">Romantic</option>
+            <option value="Happy">Happy</option>
+            <option value="Scary">Scary</option>
+          </select>
+          
+          <label for="quality_service" class="form-label">Quality of Service</label>
+          <select id="quality_service" class="form-select mb-3">
+            <option selected disabled="disabled" value="">Quality of Service</option>
+            <option value="Excellent">Excellent</option>
+            <option value="Good">Good</option>
+            <option value="Fine">Fine</option>
+            <option value="Poor">Poor</option>
+          </select>
+          
+          <label for="cleanliness" class="form-label">Cleanliness</label>
+          <select id="cleanliness" class="form-select mb-3">
+            <option selected disabled="disabled" value="">Quality of Service</option>
+            <option value="Excellent">Excellent</option>
+            <option value="Good">Good</option>
+            <option value="Fine">Fine</option>
+            <option value="Poor">Poor</option>
+          </select>
+          
+          <label for="speed_service" class="form-label">Speed of Service</label>
+          <select id="speed_service" class="form-select mb-3">
+            <option selected disabled="disabled" value="">Speed of Service</option>
+            <option value="Fast">Fast</option>
+            <option value="Normal">Normal</option>
+            <option value="Slow">Slow</option>
+          </select>
+          
+          <label for="value_money" class="form-label">Value for Money</label>
+          <select id="value_money" class="form-select mb-3">
+            <option selected disabled="disabled" value="">Value for Money</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+          
+          <label for="allergy_information" class="form-label">Allergy Information Provided</label>
+          <select id="allergy_information" class="form-select mb-3">
+            <option selected disabled="disabled" value="">Allergy Information Provided</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>            
+
+          <button id="add_resturant_button" type="button" class="btn btn-primary">Submit</button>          
+        </form>
+
+        <div id="add_restuarant_loader" class="d-none">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span class="processing-text">Processing....</span>            
+        </div>
+
+        <div class="alert alert-warning d-none" id="restaurant-alert" role="alert">Please Make Sure All Fields Are Filled!</div>
+        <div class="alert alert-success d-none" id="restaurant-success" role="alert">Restaurant added successfully to the database!</div>
+        
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+      <div class="col-md-4 d-flex align-items-center">
+        <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+          <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+        <span class="text-muted">© 2022 Restaurant Review System</span>
+      </div>
+    </footer>
+  </div>  
+
+    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <!--
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+      import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+    </script>
+-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-app.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.2/firebase-analytics.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />     
+
+    <!--Custom utility functions for the website-->
+    <script src="assets/js/custom.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBhqI5gPXI7UNbUiswgvTRC3wnD6SELM9c",
+        authDomain: "reviewsystem-b2602.firebaseapp.com",
+        projectId: "reviewsystem-b2602",
+        storageBucket: "reviewsystem-b2602.appspot.com",
+        messagingSenderId: "639222450302",
+        appId: "1:639222450302:web:7dcc07b601af8bcc63f02f"
+      };
+    
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+
+  var firestore     = firebase.firestore(); //Reference to database
+  var ui            = new firebaseui.auth.AuthUI(firebase.auth());
+
+  var uiConfig = {
+    callbacks: {
+      signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+        // User successfully signed in.
+        // Return type determines whether we continue the redirect automatically
+        // or whether we leave that to developer to handle.
+        checkUserInDB(authResult.user)
+        return false;
+      },
+      uiShown: function() {
+        // The widget is rendered.
+        // Hide the loader.
+        document.getElementById('loader').style.display = 'none';
+      }
+    },
+    // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+    signInFlow: 'popup',
+    signInSuccessUrl: 'index.html',
+    signInOptions: [
+      {
+        // Leave the lines as is for the providers you want to offer your users.
+        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        requireDisplayName: false,
+      }
+    ],
+    // Terms of service url.
+    tosUrl: '<your-tos-url>',
+    // Privacy policy url.
+    privacyPolicyUrl: '<your-privacy-policy-url>'
+  };
+      
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    showUserDetails(firebase.auth().currentUser.uid);
+    updateLinksInHeader();    
+  } else {
+    // No user is signed in.
+  }
+});      
+
+      // The start method will wait until the DOM is loaded.
+      //ui.start('#firebaseui-auth-container', uiConfig);
+
+      checkUserInDB=function(user){
+
+        firestore.collection("Users").doc(user.uid).get().then(function(doc){
+            if(doc && doc.exists){
+                console.log("Document Exists");
+                //Do nothing
+            }
+            else{
+                console.log("Document Does Not Exist");
+                firestore.collection("Users").doc(user.uid).set({
+                    uid: user.uid,
+                    username: user.email,
+                })
+                .then(function() {
+                    console.log("User Added to Database");
+                })
+                .catch(function(error) {
+                    console.error("Error writing document: ", error);                    
+                });
+
+                firebase.auth().currentUser.sendEmailVerification().then(function() {
+                // Email sent.
+                }).catch(function(error) {
+                // An error happened.
+                });                                        
+            }
+        });
+      }
+
+      areFieldsEmpty = function(restaurant_name,restaurant_address, type_service,type_food,occasion,dining_option,average_expense,qualtiy_food,ambiance,quality_service,cleanliness,speed_service,value_money,allergy_information){
+
+        if(restaurant_name=="")
+          return true;
+
+        if(restaurant_address=="")
+          return true;
+
+        if(type_service=="")
+          return true;
+
+        if(type_food=="")
+          return true;
+
+        if(occasion=="")
+          return true;
+
+        if(dining_option=="")
+          return true;
+
+        if(average_expense=="")
+          return true;
+
+        if(qualtiy_food=="")
+          return true;
+
+        if(ambiance=="")
+          return true;
+
+        if(quality_service=="")
+          return true;
+
+        if(cleanliness=="")
+          return true;
+
+        if(speed_service=="")
+          return true;
+
+        if(value_money=="")
+          return true;
+
+        if(allergy_information=="")
+          return true;
+        
+
+      }
+
+      document.querySelector("#add_resturant_button").addEventListener("click",function(e){
+            e.preventDefault();
+            //Show the loader
+            showAddingRestaurantsSpinner();
+            //reset the alert and success on button click
+            $("#restaurant-alert").addClass("d-none");
+            $("#restaurant-success").addClass("d-none");
+
+            let fields = [];
+            
+            const restaurant_name     = document.querySelector("#restaurant_name").value;
+            const restaurant_address  = document.querySelector("#restaurant_address").value;
+            const type_service        = document.querySelector("#type_service").value;
+            const type_food           = document.querySelector("#type_food").value;
+            const occasion            = document.querySelector("#occasion").value;
+            const dining_option       = $('#dining_option').val();
+            const average_expense     = document.querySelector("#average_expense").value;
+            const qualtiy_food        = document.querySelector("#qualtiy_food").value;
+            const ambiance            = document.querySelector("#ambiance").value;
+            const quality_service     = document.querySelector("#quality_service").value;
+            const cleanliness         = document.querySelector("#cleanliness").value;
+            const speed_service       = document.querySelector("#speed_service").value;
+            const value_money         = document.querySelector("#value_money").value;
+            const allergy_information = document.querySelector("#allergy_information").value;
+
+            const FieldsEmpty = areFieldsEmpty(restaurant_name,restaurant_address, type_service,type_food,occasion,dining_option,average_expense,qualtiy_food,ambiance,quality_service,cleanliness,speed_service,value_money,allergy_information);
+
+            if(FieldsEmpty){
+
+              hideAddingRestaurantsSpinner();
+              
+              $("#restaurant-alert").removeClass("d-none");
+            
+            }
+            else{
+              
+              $("#restaurant-alert").addClass("d-none");
+
+              hideAddingRestaurantsSpinner();
+
+              document.getElementById('restaurant-form').reset();
+
+              firestore.collection("Restaurant").add({
+                  name:                 restaurant_name,
+                  address:              restaurant_address,
+                  type_service:         type_service,
+                  type_food:            type_food,
+                  occasion:             occasion,    
+                  dining:               dining_option,    //should be an array
+                  average_expense:      Number(average_expense),    
+                  quality_food:         qualtiy_food,    
+                  ambiance:             ambiance,    
+                  quality_service:      quality_service,    
+                  cleanliness:          cleanliness,    
+                  speed_service:        speed_service,    
+                  value_money:          value_money,
+                  allergy_information:  allergy_information,    
+                  average_rating:       Number(0),   
+                  number_rating:        Number(0),   
+                  hidden:               false    
+              })
+              .then((docRef) => {
+                  console.log("Document written with ID: ", docRef.id);
+                  $("#restaurant-success").removeClass("d-none");
+              })
+              .catch((error) => {
+                  console.error("Error adding document: ", error);
+              });
+            }
+      });
+
+/*      
+firestore.collection("Users").add({
+    first: "Ada",
+    last: "Lovelace",
+    born: 1815
+})
+.then((docRef) => {
+    console.log("Document written with ID: ", docRef.id);
+})
+.catch((error) => {
+    console.error("Error adding document: ", error);
+});
+*/
+
+// firestore.collection("Restaurant").add({
+//     name:                 "KFC",
+//     address:                 "KFC",
+//     type_service:         "Fast Food",
+//     type_food:            "American",
+//     occasion:             "Family Meal",    
+//     dining:               "lunch",    //should be an array
+//     average_expense:      7,    
+//     qualtiy_food:         "Good",    
+//     ambiance:             "Cool",    
+//     quality_service:      "Good",    
+//     cleanliness:          "Good",    
+//     speed_service:        "Fast",    
+//     value_money:          "Yes",
+//     allergy_information:  "Yes"    
+// })
+// .then((docRef) => {
+//     console.log("Document written with ID: ", docRef.id);
+// })
+// .catch((error) => {
+//     console.error("Error adding document: ", error);
+// });
+
+// firestore.collection("Reviews").add({
+//     userID:               "cZGFYworR7fM2ofWMwegFm7ZVJV2",
+//     restuarant_ID:        "XDYXK2T4nzlEkeI2Kb0G",
+//     review_text:          "Good Meal! I Like! Yum Yum",
+//     rating:               4
+// })
+// .then((docRef) => {
+//     console.log("Document written with ID: ", docRef.id);
+// })
+// .catch((error) => {
+//     console.error("Error adding document: ", error);
+// });
+
+    </script>
+    
+
+  </body>
+</html>

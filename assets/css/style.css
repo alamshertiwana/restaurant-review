@@ -1,0 +1,151 @@
+body{
+  background-color: #fcfcfb;  
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;  
+}
+
+.firebaseui-card-header {
+  display: none;
+}
+
+#firebaseui-auth-container .mdl-shadow--2dp{
+  box-shadow: none;
+}
+
+.add-restaurant .alert{
+  margin-top:20px;
+}
+
+.add-restaurant label{
+  font-weight:500;
+}
+
+
+/*Homepage Restaurant List*/
+.restaurant-box {
+  padding: 20px;
+  border:1px solid #0d6efd;
+  border-radius: 5px;
+  margin-bottom:20px;
+}
+
+.loading-text{
+  font-size:40px;
+  font-weight:bold;
+}
+
+.processing-text{
+  font-size:26px;
+  font-weight:bold;
+}
+
+.restaurant-no-results{
+  font-size: 20px;
+}
+
+button#load_more_restaurants {
+  width: 100%;
+  font-size: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+/*Overlay Restaurant List*/
+.overlay {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #dfdfdf;
+  overflow-x: hidden;
+  transition: 0.5s;
+}
+
+.overlay-content {
+  position: relative;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.overlay a {
+  padding: 8px;
+  text-decoration: none;
+  font-size: 36px;
+  display: block;
+  transition: 0.3s;
+}
+
+.overlay .closebtn {
+  position: absolute;
+  top: 0px;
+  right: 45px;
+  font-size: 60px;
+  z-index: 9999;
+  background: #ff0000;
+  color: #fff;  
+}
+
+p.restaurant-address {
+  margin-bottom: 5px;
+}
+
+.overlay .review-box p{
+  margin-bottom:0px;
+}
+
+.review-list{
+  padding:20px;
+}
+
+.review-box .review-name,.review-box .review-rating{
+  font-weight:600;
+}
+
+.review-box {
+  border: 1px solid #0d6efd;
+  background:#fff;
+  border-radius: 5px;
+  margin: 0 0 16px;
+  padding: 16px;
+}
+
+.realtime-review {
+  box-shadow: 0 0px 7px 2px orange;
+}
+
+#add-review-form label{
+  font-weight: bold;
+}
+
+/*Account page*/
+.row.account-detail-row {
+  border-bottom: 1px solid #ccc;
+}
+
+.account-sidebar{
+  border-right:1px solid #ccc;
+}
+
+/*Filter Form*/
+.filter-form label{
+  font-weight:bold;
+}
+
+#filter_resturant_button{
+  font-size:18px;
+  text-transform: uppercase;
+  background:rebeccapurple;
+  border-color: rebeccapurple;
+}
+
+/*Tablet Styles*/
+@media (max-width: 980px) {
+  .overlay-content {
+      margin-top: 100px;
+  }
+}
