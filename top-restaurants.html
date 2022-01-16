@@ -142,7 +142,7 @@
 
     }
 
-    firestore.collection("Restaurant").orderBy("average_rating","desc").limit(restaurant_pagination).get().then((querySnapshot) => {
+    firestore.collection("Restaurant").where("hidden","==",false).orderBy("average_rating","desc").limit(restaurant_pagination).get().then((querySnapshot) => {
 
       startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
 
@@ -170,7 +170,7 @@
         
         showLoadingRestaurantsSpinner();
 
-        let filterQuery = firestore.collection("Restaurant").orderBy("average_rating","desc");
+        let filterQuery = firestore.collection("Restaurant").where("hidden","==",false).orderBy("average_rating","desc");
 
         filterQuery = filterQuery.startAfter(startAfterDoc).limit(restaurant_pagination);
 
