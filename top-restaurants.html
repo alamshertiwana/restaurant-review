@@ -134,7 +134,8 @@
 
     var firestore     = firebase.firestore(); //Reference to database
     var ui            = new firebaseui.auth.AuthUI(firebase.auth());
-
+    let initial_flag              = true;      //prevent the latest review from printing twice
+    const user = new User();
 
 
     //Functions to load the initial list of the restaurants
@@ -144,7 +145,7 @@
                           +'<h3 class="restaurant-name">'+ doc.data().name +'</h3>'
                           +'<p class="restaurant-address">'+doc.data().address+'</p>'
                           +'<span class="restaurant-rating"><strong>Rating: </strong>'+doc.data().average_rating.toFixed(2)+' <em>('+doc.data().number_rating+' Reviews)</em></span>'
-                          +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="openRestaurant(\''+doc.id+'\')" type="button" class="btn btn-primary d-block mt-3">View Details</button>'
+                          +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="user.openRestaurant(\''+doc.id+'\')" type="button" class="btn btn-primary d-block mt-3">View Details</button>'
                         +'</div>';
 
       return post_block;            
