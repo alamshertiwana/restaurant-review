@@ -116,60 +116,17 @@
     <!--Custom utility functions for the website-->
     <script src="assets/js/custom.js"></script>
 
-    <script>
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyBhqI5gPXI7UNbUiswgvTRC3wnD6SELM9c",
-        authDomain: "reviewsystem-b2602.firebaseapp.com",
-        projectId: "reviewsystem-b2602",
-        storageBucket: "reviewsystem-b2602.appspot.com",
-        messagingSenderId: "639222450302",
-        appId: "1:639222450302:web:7dcc07b601af8bcc63f02f"
-      };
+    <!--Firebase Config-->
+    <script src="app/config.js"></script>     
     
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
+    <script>
 
-    //Restaurant List and Filter Variables
-    let startAfterDoc             =   null;    //for load more button
-    const restaurant_pagination   =  5;        //number of resturants to show for pagination
+  //Restaurant List and Filter Variables
+  let startAfterDoc             =   null;    //for load more button
+  const restaurant_pagination   =  5;        //number of resturants to show for pagination
 
-    var firestore     = firebase.firestore(); //Reference to database
-    var ui            = new firebaseui.auth.AuthUI(firebase.auth());
-
-  var uiConfig = {
-    callbacks: {
-      signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-        // User successfully signed in.
-        // Return type determines whether we continue the redirect automatically
-        // or whether we leave that to developer to handle.
-        checkUserInDB(authResult.user)
-        return false;
-      },
-      uiShown: function() {
-        // The widget is rendered.
-        // Hide the loader.
-        document.getElementById('loader').style.display = 'none';
-      }
-    },
-    // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-    signInFlow: 'popup',
-    signInSuccessUrl: 'index.html',
-    signInOptions: [
-      {
-        // Leave the lines as is for the providers you want to offer your users.
-        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        requireDisplayName: false,
-      }
-    ],
-    // Terms of service url.
-    tosUrl: '<your-tos-url>',
-    // Privacy policy url.
-    privacyPolicyUrl: '<your-privacy-policy-url>'
-  };
-
-/*----------PAGE SPECIFIC CODE STARTS HERE -------------------*/  
+  var firestore     = firebase.firestore(); //Reference to database
+  var ui            = new firebaseui.auth.AuthUI(firebase.auth());
       
   firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
@@ -196,46 +153,32 @@
   }
 
 
-// firestore.collection("Restaurant").get().then((querySnapshot) => {
-
-//   startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
-
-//   hideHideRestaurantsSpinner();
-
-//   querySnapshot.forEach((doc) => {
-
-//     $("#restaurant-list").append(printRestaurantBox(doc));
-
-//   });
-
-// });
-
-function printReviewsForRemove(doc,display_name){
+  function printReviewsForRemove(doc,display_name){
+      
+      var post_block = '<div class="col review-box">'
+                            +'<p class="review-name"><strong>Name : </strong>'+doc.data().reviewer_name+'</p>'
+                            +'<p class="review-rating"><strong>Rating : </strong> '+ratingToText(doc.data().rating)+'</p>'
+                            +'<p class="review-text"><strong>Review : </strong> '+doc.data().review_text+'</p>'
+                            +'<p class="review-restaurant"><strong>Restaurant : </strong> '+doc.data().restaurant_name+'</p>'
+                            +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="removeReviewText(\''+doc.id+'\', this)" type="button" class="btn btn-primary d-block mt-3">Remove</button>'
+                        +'</div>'
     
-    var post_block = '<div class="col review-box">'
-                          +'<p class="review-name"><strong>Name : </strong>'+doc.data().reviewer_name+'</p>'
-                          +'<p class="review-rating"><strong>Rating : </strong> '+ratingToText(doc.data().rating)+'</p>'
-                          +'<p class="review-text"><strong>Review : </strong> '+doc.data().review_text+'</p>'
-                          +'<p class="review-restaurant"><strong>Restaurant : </strong> '+doc.data().restaurant_name+'</p>'
-                          +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="removeReviewText(\''+doc.id+'\', this)" type="button" class="btn btn-primary d-block mt-3">Remove</button>'
-                      +'</div>'
-  
-    return post_block;
-}
+      return post_block;
+  }
 
-firestore.collection("Reviews").orderBy("time","desc").get().then((querySnapshot) => {
+  firestore.collection("Reviews").orderBy("time","desc").get().then((querySnapshot) => {
 
-  startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
+    startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
 
-  hideHideRestaurantsSpinner();
+    hideHideRestaurantsSpinner();
 
-  querySnapshot.forEach((doc) => {
+    querySnapshot.forEach((doc) => {
 
-    $("#review-list").append(printReviewsForRemove(doc));
+      $("#review-list").append(printReviewsForRemove(doc));
 
-  });
+    });
 
-}); 
+  }); 
 
     </script>
     
