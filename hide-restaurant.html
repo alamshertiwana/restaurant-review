@@ -116,20 +116,10 @@
     <!--Custom utility functions for the website-->
     <script src="assets/js/custom.js"></script>
 
-    <script>
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyBhqI5gPXI7UNbUiswgvTRC3wnD6SELM9c",
-        authDomain: "reviewsystem-b2602.firebaseapp.com",
-        projectId: "reviewsystem-b2602",
-        storageBucket: "reviewsystem-b2602.appspot.com",
-        messagingSenderId: "639222450302",
-        appId: "1:639222450302:web:7dcc07b601af8bcc63f02f"
-      };
+    <!--Firebase Config-->
+    <script src="app/config.js"></script>    
     
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
+    <script>
 
     //Restaurant List and Filter Variables
     let startAfterDoc             =   null;    //for load more button
@@ -138,121 +128,79 @@
     var firestore     = firebase.firestore(); //Reference to database
     var ui            = new firebaseui.auth.AuthUI(firebase.auth());
 
-  var uiConfig = {
-    callbacks: {
-      signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-        // User successfully signed in.
-        // Return type determines whether we continue the redirect automatically
-        // or whether we leave that to developer to handle.
-        checkUserInDB(authResult.user)
-        return false;
-      },
-      uiShown: function() {
-        // The widget is rendered.
-        // Hide the loader.
-        document.getElementById('loader').style.display = 'none';
-      }
-    },
-    // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-    signInFlow: 'popup',
-    signInSuccessUrl: 'index.html',
-    signInOptions: [
-      {
-        // Leave the lines as is for the providers you want to offer your users.
-        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        requireDisplayName: false,
-      }
-    ],
-    // Terms of service url.
-    tosUrl: '<your-tos-url>',
-    // Privacy policy url.
-    privacyPolicyUrl: '<your-privacy-policy-url>'
-  };
-
-/*----------PAGE SPECIFIC CODE STARTS HERE -------------------*/  
       
-firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      updateLinksInHeader();    
-    } else {
-      // No user is signed in.
+  firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        updateLinksInHeader();    
+      } else {
+        // No user is signed in.
+      }
+    });
+
+
+    disableButtonText = function(check){
+      if(check)
+        return "Enable";
+      else
+        return "Disable";
     }
-  });
+
+    toggleRestaurant = function(ID,hidden,element){
+
+      element.innerHTML = "Processing....";
+
+      if(hidden==true){
+        firestore.collection("Restaurant").doc(ID).set({
+          hidden: false,
+        }, 
+        { merge: true }).then(() => {
+          element.innerHTML = "Updated!";
+          element.classList.add("btn-success");
+          element.classList.add("disabled");
+        });
+      }
+      else{
+        firestore.collection("Restaurant").doc(ID)
+        .set({
+          hidden: true,
+        }, 
+        { merge: true }).then(() => {
+              //console.log("Updated Data");
+          element.innerHTML = "Updated!";
+          element.classList.add("disabled");                 
+        });      
+      }      
 
 
-  disableButtonText = function(check){
-    if(check)
-      return "Enable";
-    else
-      return "Disable";
-  }
-
-  toggleRestaurant = function(ID,hidden,element){
-
-    element.innerHTML = "Processing....";
-
-    // if(element.innerHTML == "Disable"){
-    //   element.innerHTML = "Enable";
-    //   element.classList.add("btn-success");      
-    // }
-
-    // else if(element.innerHTML == "Enable"){
-    //   element.innerHTML = "Disable";
-    //   element.classList.remove("btn-success");      
-    // }
-
-    if(hidden==true){
-      firestore.collection("Restaurant").doc(ID).set({
-        hidden: false,
-      }, 
-      { merge: true }).then(() => {
-        element.innerHTML = "Updated!";
-        element.classList.add("btn-success");
-        element.classList.add("disabled");
-      });
     }
-    else{
-      firestore.collection("Restaurant").doc(ID)
-      .set({
-        hidden: true,
-      }, 
-      { merge: true }).then(() => {
-            //console.log("Updated Data");
-        element.innerHTML = "Updated!";
-        element.classList.add("disabled");                 
-      });      
-    }      
-
-
-  }
   
-//Functions to load the initial list of the restaurants
-printRestaurantBox = function(doc){
+    //Functions to load the initial list of the restaurants
+    printRestaurantBox = function(doc){
 
-  var post_block = '<div class="restaurant-box">'
-                      +'<h3 class="restaurant-name">'+ doc.data().name +'</h3>'
-                      +'<p class="restaurant-address">'+doc.data().address+'</p>'
-                      +'<span class="restaurant-rating"><strong>Rating: </strong>'+doc.data().average_rating.toFixed(2)+' <em>('+doc.data().number_rating+' Reviews)</em></span>'
-                      +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="toggleRestaurant(\''+doc.id+'\','+doc.data().hidden+', this)" type="button" class="btn btn-primary d-block mt-3">'+disableButtonText(doc.data().hidden)+'</button>'
-                    +'</div>';
+      var post_block = '<div class="restaurant-box">'
+                          +'<h3 class="restaurant-name">'+ doc.data().name +'</h3>'
+                          +'<p class="restaurant-address">'+doc.data().address+'</p>'
+                          +'<span class="restaurant-rating"><strong>Rating: </strong>'+doc.data().average_rating.toFixed(2)+' <em>('+doc.data().number_rating+' Reviews)</em></span>'
+                          +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="toggleRestaurant(\''+doc.id+'\','+doc.data().hidden+', this)" type="button" class="btn btn-primary d-block mt-3">'+disableButtonText(doc.data().hidden)+'</button>'
+                        +'</div>';
 
-  return post_block;            
+      return post_block;            
 
-}
+    }
 
-firestore.collection("Restaurant").get().then((querySnapshot) => {
+    firestore.collection("Restaurant").get().then((querySnapshot) => {
 
-  startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
+      startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
 
-  hideHideRestaurantsSpinner();
+      hideHideRestaurantsSpinner();
 
-  querySnapshot.forEach((doc) => {
+      querySnapshot.forEach((doc) => {
 
-    $("#restaurant-list").append(printRestaurantBox(doc));
+        $("#restaurant-list").append(printRestaurantBox(doc));
 
-  });
+      });
 
-});  
+    });  
 
     </script>
     
