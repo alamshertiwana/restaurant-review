@@ -88,5 +88,34 @@ class Admin {
           element.classList.add("disabled");
         });
     
-      }    
+      }
+      
+    toggleRestaurant (ID,hidden,element){
+
+    element.innerHTML = "Processing....";
+
+    if(hidden==true){
+        firestore.collection("Restaurant").doc(ID).set({
+        hidden: false,
+        }, 
+        { merge: true }).then(() => {
+        element.innerHTML = "Updated!";
+        element.classList.add("btn-success");
+        element.classList.add("disabled");
+        });
+    }
+    else{
+        firestore.collection("Restaurant").doc(ID)
+        .set({
+        hidden: true,
+        }, 
+        { merge: true }).then(() => {
+            //console.log("Updated Data");
+        element.innerHTML = "Updated!";
+        element.classList.add("disabled");                 
+        });      
+    }      
+
+
+    }      
 }

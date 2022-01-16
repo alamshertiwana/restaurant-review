@@ -117,7 +117,14 @@
     <script src="assets/js/custom.js"></script>
 
     <!--Firebase Config-->
-    <script src="app/config.js"></script>    
+    <script src="app/config.js"></script>
+
+    <!--User Class-->
+    <script src="app/user.js"></script>   
+    
+    <!--Admin Class-->
+    <script src="app/admin.js"></script>       
+    
     
     <script>
 
@@ -127,6 +134,7 @@
 
     var firestore     = firebase.firestore(); //Reference to database
     var ui            = new firebaseui.auth.AuthUI(firebase.auth());
+    const admin_ui = new Admin();    
 
       
   firebase.auth().onAuthStateChanged(function(user) {
@@ -181,7 +189,7 @@
                           +'<h3 class="restaurant-name">'+ doc.data().name +'</h3>'
                           +'<p class="restaurant-address">'+doc.data().address+'</p>'
                           +'<span class="restaurant-rating"><strong>Rating: </strong>'+doc.data().average_rating.toFixed(2)+' <em>('+doc.data().number_rating+' Reviews)</em></span>'
-                          +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="toggleRestaurant(\''+doc.id+'\','+doc.data().hidden+', this)" type="button" class="btn btn-primary d-block mt-3">'+disableButtonText(doc.data().hidden)+'</button>'
+                          +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="admin_ui.toggleRestaurant(\''+doc.id+'\','+doc.data().hidden+', this)" type="button" class="btn btn-primary d-block mt-3">'+disableButtonText(doc.data().hidden)+'</button>'
                         +'</div>';
 
       return post_block;            
