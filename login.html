@@ -87,20 +87,10 @@
     <script src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />     
 
+    <!--Firebase Config-->
+    <script src="app/config.js"></script>    
+
     <script>
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyBhqI5gPXI7UNbUiswgvTRC3wnD6SELM9c",
-        authDomain: "reviewsystem-b2602.firebaseapp.com",
-        projectId: "reviewsystem-b2602",
-        storageBucket: "reviewsystem-b2602.appspot.com",
-        messagingSenderId: "639222450302",
-        appId: "1:639222450302:web:7dcc07b601af8bcc63f02f"
-      };
-    
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
 
       var firestore     = firebase.firestore(); //Reference to database
       var ui            = new firebaseui.auth.AuthUI(firebase.auth());
@@ -143,7 +133,7 @@
 
         firestore.collection("Users").doc(user.uid).get().then(function(doc){
             if(doc && doc.exists){
-                console.log("Document Exists");
+                //console.log("Document Exists");
                 window.location.href = "index.html";
             }
             else{
@@ -161,11 +151,11 @@
                     console.error("Error writing document: ", error);                    
                 });
 
-                firebase.auth().currentUser.sendEmailVerification().then(function() {
-                // Email sent.
-                }).catch(function(error) {
-                // An error happened.
-                });                                        
+                // firebase.auth().currentUser.sendEmailVerification().then(function() {
+                // // Email sent.
+                // }).catch(function(error) {
+                // // An error happened.
+                // });                                        
             }
         });
       }
