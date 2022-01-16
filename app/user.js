@@ -4,7 +4,7 @@ class User {
   } 
 
   getRestaurants(){
-    firestore.collection("Restaurant").limit(restaurant_pagination).get().then((querySnapshot) => {
+    firestore.collection("Restaurant").where("hidden","==",false).limit(restaurant_pagination).get().then((querySnapshot) => {
 
         startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
 
@@ -68,7 +68,7 @@ class User {
   }
 
   loadMoreRestaurants(){
-    let filterQuery = firestore.collection("Restaurant");
+    let filterQuery = firestore.collection("Restaurant").where("hidden","==",false);
 
     const type_food_filter      = document.querySelector("#type_food").value;
     const occasion              = document.querySelector("#occasion").value;
