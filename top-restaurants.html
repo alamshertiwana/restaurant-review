@@ -114,91 +114,47 @@
     <!--Custom utility functions for the website-->
     <script src="assets/js/custom.js"></script>
 
+    <!--Firebase Config-->
+    <script src="app/config.js"></script>   
+
     <script>
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyBhqI5gPXI7UNbUiswgvTRC3wnD6SELM9c",
-    authDomain: "reviewsystem-b2602.firebaseapp.com",
-    projectId: "reviewsystem-b2602",
-    storageBucket: "reviewsystem-b2602.appspot.com",
-    messagingSenderId: "639222450302",
-    appId: "1:639222450302:web:7dcc07b601af8bcc63f02f"
-  };
 
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
+    //Restaurant List and Filter Variables
+    let startAfterDoc             =   null;    //for load more button
+    const restaurant_pagination   =  5;
 
-  //Restaurant List and Filter Variables
-  let startAfterDoc             =   null;    //for load more button
-  const restaurant_pagination   =  5;
-
-  var firestore     = firebase.firestore(); //Reference to database
-  var ui            = new firebaseui.auth.AuthUI(firebase.auth());
-
-  var uiConfig = {
-    callbacks: {
-      signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-        // User successfully signed in.
-        // Return type determines whether we continue the redirect automatically
-        // or whether we leave that to developer to handle.
-        checkUserInDB(authResult.user)
-        return false;
-      },
-      uiShown: function() {
-        // The widget is rendered.
-        // Hide the loader.
-        document.getElementById('loader').style.display = 'none';
-      }
-    },
-    // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-    signInFlow: 'popup',
-    signInSuccessUrl: 'index.html',
-    signInOptions: [
-      {
-        // Leave the lines as is for the providers you want to offer your users.
-        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        requireDisplayName: false,
-      }
-    ],
-    // Terms of service url.
-    tosUrl: '<your-tos-url>',
-    // Privacy policy url.
-    privacyPolicyUrl: '<your-privacy-policy-url>'
-  };      
-
-  // The start method will wait until the DOM is loaded.
-  //ui.start('#firebaseui-auth-container', uiConfig);
+    var firestore     = firebase.firestore(); //Reference to database
+    var ui            = new firebaseui.auth.AuthUI(firebase.auth());
 
 
 
-//Functions to load the initial list of the restaurants
-printRestaurantBox = function(doc){
+    //Functions to load the initial list of the restaurants
+    printRestaurantBox = function(doc){
 
-  var post_block = '<div class="restaurant-box">'
-                      +'<h3 class="restaurant-name">'+ doc.data().name +'</h3>'
-                      +'<p class="restaurant-address">'+doc.data().address+'</p>'
-                      +'<span class="restaurant-rating"><strong>Rating: </strong>'+doc.data().average_rating.toFixed(2)+' <em>('+doc.data().number_rating+' Reviews)</em></span>'
-                      +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="openRestaurant(\''+doc.id+'\')" type="button" class="btn btn-primary d-block mt-3">View Details</button>'
-                    +'</div>';
+      var post_block = '<div class="restaurant-box">'
+                          +'<h3 class="restaurant-name">'+ doc.data().name +'</h3>'
+                          +'<p class="restaurant-address">'+doc.data().address+'</p>'
+                          +'<span class="restaurant-rating"><strong>Rating: </strong>'+doc.data().average_rating.toFixed(2)+' <em>('+doc.data().number_rating+' Reviews)</em></span>'
+                          +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="openRestaurant(\''+doc.id+'\')" type="button" class="btn btn-primary d-block mt-3">View Details</button>'
+                        +'</div>';
 
-  return post_block;            
+      return post_block;            
 
-}
+    }
 
-firestore.collection("Restaurant").orderBy("average_rating","desc").limit(restaurant_pagination).get().then((querySnapshot) => {
+    firestore.collection("Restaurant").orderBy("average_rating","desc").limit(restaurant_pagination).get().then((querySnapshot) => {
 
-  startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
+      startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
 
-  hideLoadingRestaurantsSpinner();
+      hideLoadingRestaurantsSpinner();
 
-  querySnapshot.forEach((doc) => {
+      querySnapshot.forEach((doc) => {
 
-    $("#restaurant-list").append(printRestaurantBox(doc));
+        $("#restaurant-list").append(printRestaurantBox(doc));
 
-  });
+      });
 
-});
+    });
 
 //----------------End Functions to load the initial list of the reviews
 
@@ -206,42 +162,42 @@ firestore.collection("Restaurant").orderBy("average_rating","desc").limit(restau
 
 /*---------------------------------------------------------LOAD MORE---------------------------*/
 
-  const load_more_button    =   document.querySelector("#load_more_restaurants");
+    const load_more_button    =   document.querySelector("#load_more_restaurants");
 
-  load_more_button.addEventListener("click",function(e){
+    load_more_button.addEventListener("click",function(e){
 
-      e.preventDefault();            
-      
-      showLoadingRestaurantsSpinner();
+        e.preventDefault();            
+        
+        showLoadingRestaurantsSpinner();
 
-      let filterQuery = firestore.collection("Restaurant").orderBy("average_rating","desc");
+        let filterQuery = firestore.collection("Restaurant").orderBy("average_rating","desc");
 
-      filterQuery = filterQuery.startAfter(startAfterDoc).limit(restaurant_pagination);
+        filterQuery = filterQuery.startAfter(startAfterDoc).limit(restaurant_pagination);
 
 
-      filterQuery.get()
-      .then(function(querySnapshot) {
+        filterQuery.get()
+        .then(function(querySnapshot) {
 
-          startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
-          //console.log(querySnapshot.docs.length);
+            startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
+            //console.log(querySnapshot.docs.length);
 
-          hideLoadingRestaurantsSpinner();
-          
-          if(querySnapshot.docs.length <restaurant_pagination){
-              disableLoadMoreButton();
-          }
-          
-          querySnapshot.forEach(function(doc) {
+            hideLoadingRestaurantsSpinner();
+            
+            if(querySnapshot.docs.length <restaurant_pagination){
+                disableLoadMoreButton();
+            }
+            
+            querySnapshot.forEach(function(doc) {
 
-              $("#restaurant-list").append(printRestaurantBox(doc));
-              
-          });
-      })
-      .catch(function(error) {
-          console.log("Error getting documents: ", error);
-      });
+                $("#restaurant-list").append(printRestaurantBox(doc));
+                
+            });
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
 
-  });
+    });
 
    
     </script>
