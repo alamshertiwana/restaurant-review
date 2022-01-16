@@ -116,7 +116,32 @@ class User {
 
         }
     });    
-}  
+}
+
+showUserReviews(ID){
+
+    firestore.collection("Users").doc(ID).get().then((querySnapshot) => { 
+
+        hideLoadingAccountSpinner(); 
+
+        if(querySnapshot && querySnapshot.exists){
+
+            const display_name = querySnapshot.data().display_name;
+
+            firestore.collection("Reviews").where("user_ID","==",ID).get().then((querySnapshot) => {
+
+                querySnapshot.forEach((doc) => {
+            
+                    $("#review_list").append(printReviewUser(doc,display_name));          
+            
+                });
+            
+            });             
+
+        }
+    });     
+    
+}
 
 }
 

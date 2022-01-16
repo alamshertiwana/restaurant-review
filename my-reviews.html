@@ -108,7 +108,10 @@
     <script src="assets/js/custom.js"></script>
 
     <!--Firebase Config-->
-    <script src="app/config.js"></script>     
+    <script src="app/config.js"></script>
+    
+    <!--User Class-->
+    <script src="app/user.js"></script>     
 
     <script>
     var firestore     = firebase.firestore(); //Reference to database
@@ -117,7 +120,11 @@
 
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        showUserReviews(firebase.auth().currentUser.uid);
+
+        const user_ui = new User();
+
+        user_ui.showUserReviews(firebase.auth().currentUser.uid);
+
         updateLinksInHeader();
       } else {
         // No user is signed in.
