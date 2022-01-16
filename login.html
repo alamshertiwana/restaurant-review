@@ -88,12 +88,16 @@
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />     
 
     <!--Firebase Config-->
-    <script src="app/config.js"></script>    
+    <script src="app/config.js"></script>
+    
+    <!--User Class-->
+    <script src="app/user.js"></script>       
 
     <script>
 
       var firestore     = firebase.firestore(); //Reference to database
       var ui            = new firebaseui.auth.AuthUI(firebase.auth());
+      const user_ui = new User();
 
       var uiConfig = {
         callbacks: {
@@ -101,7 +105,7 @@
             // User successfully signed in.
             // Return type determines whether we continue the redirect automatically
             // or whether we leave that to developer to handle.
-            checkUserInDB(authResult.user)
+            user_ui.checkUserInDB(authResult.user)
             return false;
           },
           uiShown: function() {
@@ -129,36 +133,7 @@
       // The start method will wait until the DOM is loaded.
       ui.start('#firebaseui-auth-container', uiConfig);
 
-      checkUserInDB = function(user){
 
-        firestore.collection("Users").doc(user.uid).get().then(function(doc){
-            if(doc && doc.exists){
-                //console.log("Document Exists");
-                window.location.href = "index.html";
-            }
-            else{
-                //console.log("Document Does Not Exist");
-                firestore.collection("Users").doc(user.uid).set({
-                    uid: user.uid,
-                    display_name: user.displayName,
-                    email: user.email,
-                })
-                .then(function() {
-                    //console.log("User Added to Database");
-                    window.location.href = "index.html";
-                })
-                .catch(function(error) {
-                    console.error("Error writing document: ", error);                    
-                });
-
-                // firebase.auth().currentUser.sendEmailVerification().then(function() {
-                // // Email sent.
-                // }).catch(function(error) {
-                // // An error happened.
-                // });                                        
-            }
-        });
-      }
     </script>
     
 

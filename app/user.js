@@ -141,7 +141,38 @@ showUserReviews(ID){
         }
     });     
     
-}
+ }
+ 
+ checkUserInDB = function(user){
+
+    firestore.collection("Users").doc(user.uid).get().then(function(doc){
+        if(doc && doc.exists){
+            //console.log("Document Exists");
+            window.location.href = "index.html";
+        }
+        else{
+            //console.log("Document Does Not Exist");
+            firestore.collection("Users").doc(user.uid).set({
+                uid: user.uid,
+                display_name: user.displayName,
+                email: user.email,
+            })
+            .then(function() {
+                //console.log("User Added to Database");
+                window.location.href = "index.html";
+            })
+            .catch(function(error) {
+                console.error("Error writing document: ", error);                    
+            });
+
+            // firebase.auth().currentUser.sendEmailVerification().then(function() {
+            // // Email sent.
+            // }).catch(function(error) {
+            // // An error happened.
+            // });                                        
+        }
+    });
+  } 
 
 }
 
