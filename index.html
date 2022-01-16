@@ -217,20 +217,10 @@
     <!--Custom utility functions for the website-->
     <script src="assets/js/custom.js"></script>
 
-    <script>
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyBhqI5gPXI7UNbUiswgvTRC3wnD6SELM9c",
-        authDomain: "reviewsystem-b2602.firebaseapp.com",
-        projectId: "reviewsystem-b2602",
-        storageBucket: "reviewsystem-b2602.appspot.com",
-        messagingSenderId: "639222450302",
-        appId: "1:639222450302:web:7dcc07b601af8bcc63f02f"
-      };
+    <!--Custom utility functions for the website-->
+    <script src="app/config.js"></script>
     
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
+    <script>
 
       //Restaurant List and Filter Variables
       let startAfterDoc             =   null;    //for load more button
@@ -238,142 +228,64 @@
       let initial_flag              = true;      //prevent the latest review from printing twice
 
       var firestore     = firebase.firestore(); //Reference to database
-      var ui            = new firebaseui.auth.AuthUI(firebase.auth());
 
-      var uiConfig = {
-        callbacks: {
-          signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-            // User successfully signed in.
-            // Return type determines whether we continue the redirect automatically
-            // or whether we leave that to developer to handle.
-            checkUserInDB(authResult.user)
-            return false;
-          },
-          uiShown: function() {
-            // The widget is rendered.
-            // Hide the loader.
-            document.getElementById('loader').style.display = 'none';
-          }
-        },
-        // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-        signInFlow: 'popup',
-        signInSuccessUrl: 'index.html',
-        signInOptions: [
-          {
-            // Leave the lines as is for the providers you want to offer your users.
-            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: false,
-          }
-        ],
-        // Terms of service url.
-        tosUrl: '<your-tos-url>',
-        // Privacy policy url.
-        privacyPolicyUrl: '<your-privacy-policy-url>'
-      };      
 
-      // The start method will wait until the DOM is loaded.
-      //ui.start('#firebaseui-auth-container', uiConfig);
 
-      checkUserInDB=function(user){
+      //Functions to load the initial list of the restaurants
+      printRestaurantBox = function(doc){
 
-        firestore.collection("Users").doc(user.uid).get().then(function(doc){
-            if(doc && doc.exists){
-                console.log("Document Exists");
-                //Do nothing
-            }
-            else{
-                console.log("Document Does Not Exist");
-                firestore.collection("Users").doc(user.uid).set({
-                    uid: user.uid,
-                    username: user.email,
-                })
-                .then(function() {
-                    console.log("User Added to Database");
-                })
-                .catch(function(error) {
-                    console.error("Error writing document: ", error);                    
-                });
+        var post_block = '<div class="restaurant-box">'
+                            +'<h3 class="restaurant-name">'+ doc.data().name +'</h3>'
+                            +'<p class="restaurant-address">'+doc.data().address+'</p>'
+                            +'<span class="restaurant-rating"><strong>Rating: </strong>'+doc.data().average_rating.toFixed(2)+' <em>('+doc.data().number_rating+' Reviews)</em></span>'
+                            +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="openRestaurant(\''+doc.id+'\')" type="button" class="btn btn-primary d-block mt-3">View Details</button>'
+                          +'</div>';
 
-                firebase.auth().currentUser.sendEmailVerification().then(function() {
-                // Email sent.
-                }).catch(function(error) {
-                // An error happened.
-                });                                        
-            }
-        });
+        return post_block;            
+
       }
 
-/*      
-firestore.collection("Users").add({
-    first: "Ada",
-    last: "Lovelace",
-    born: 1815
-})
-.then((docRef) => {
-    console.log("Document written with ID: ", docRef.id);
-})
-.catch((error) => {
-    console.error("Error adding document: ", error);
-});
-*/
+      firestore.collection("Restaurant").limit(restaurant_pagination).get().then((querySnapshot) => {
 
+        startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
 
-//Functions to load the initial list of the restaurants
-printRestaurantBox = function(doc){
+        hideLoadingRestaurantsSpinner();
 
-  var post_block = '<div class="restaurant-box">'
-                      +'<h3 class="restaurant-name">'+ doc.data().name +'</h3>'
-                      +'<p class="restaurant-address">'+doc.data().address+'</p>'
-                      +'<span class="restaurant-rating"><strong>Rating: </strong>'+doc.data().average_rating.toFixed(2)+' <em>('+doc.data().number_rating+' Reviews)</em></span>'
-                      +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="openRestaurant(\''+doc.id+'\')" type="button" class="btn btn-primary d-block mt-3">View Details</button>'
-                    +'</div>';
+        querySnapshot.forEach((doc) => {
 
-  return post_block;            
+          $("#restaurant-list").append(printRestaurantBox(doc));
 
-}
+        });
 
-firestore.collection("Restaurant").limit(restaurant_pagination).get().then((querySnapshot) => {
+      });
 
-  startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
+      firestore.collection("Restaurant").orderBy("average_rating","desc").limit(restaurant_pagination).get().then((querySnapshot) => {
 
-  hideLoadingRestaurantsSpinner();
+      querySnapshot.forEach((doc) => {
 
-  querySnapshot.forEach((doc) => {
+        //console.log(doc.data().name)
 
-    $("#restaurant-list").append(printRestaurantBox(doc));
+      });
 
-  });
-
-});
-
-firestore.collection("Restaurant").orderBy("average_rating","desc").limit(restaurant_pagination).get().then((querySnapshot) => {
-
-querySnapshot.forEach((doc) => {
-
-  console.log(doc.data().name)
-
-});
-
-});
+      });
 
 //----------------End Functions to load the initial list of the reviews
 
 /*Add Review Form*/
 
 
-/*How to tell if a user is logged in*/
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    // User is signed in.
-    //addReview();
-    updateLinksInHeader();
-  } else {
-    // No user is signed in.
-  }
-});
+    /*How to tell if a user is logged in*/
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        updateLinksInHeader();
+      } else {
+        // No user is signed in.
+      }
+    });
 
 
-/*Filtering Form*/
+  /*Filtering Form*/
   const filterButton    =   document.querySelector("#filter_resturant_button");
 
   filterButton.addEventListener("click",function(e){
@@ -412,7 +324,7 @@ firebase.auth().onAuthStateChanged(function(user) {
           }
           
           if(querySnapshot.docs.length == 0){
-            console.log("There are no results.")
+            //console.log("There are no results.")
             $("#restaurant-list").append('<p class="restaurant-no-results">There are no results for this fiter!</p>');
           }
           
@@ -481,56 +393,6 @@ firebase.auth().onAuthStateChanged(function(user) {
       });
 
   });
-
-
-
-
-/*-----------------------------------------------Everything Below can be deleted*/        
-
-// firestore.collection("Restaurant").where("dining", "array-contains", "Supper").get().then((querySnapshot) => {
-
-//   console.log("1st Query");  
-
-//     querySnapshot.forEach((doc) => {
-//         console.log(doc.data().name);
-
-//     });
-
-// });
-
-// firestore.collection("Restaurant").where("type_food", "==", "American").get().then((querySnapshot) => {
-
-// console.log("2nd Query");
-
-// querySnapshot.forEach((doc) => {
-//     console.log(doc.data().name);
-
-// });
-
-// });
-
-// firestore.collection("Restaurant").where("occasion", "==", "Family").get().then((querySnapshot) => {
-
-// console.log("3rd Query");  
-
-// querySnapshot.forEach((doc) => {
-//     console.log(doc.data().name);
-
-// });
-
-// });
-
-// firestore.collection("Restaurant").where("average_expense", "<=", 10).get().then((querySnapshot) => {
-
-// console.log("4th Query");  
-
-// querySnapshot.forEach((doc) => {
-//     console.log(doc.data().name);
-
-// });
-
-// });
-
    
     </script>
     
