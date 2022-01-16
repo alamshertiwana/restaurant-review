@@ -257,16 +257,65 @@ function printReviewUser(doc,display_name){
 
 /*----------- My Revies Page Functions */
 
-    //Functions to load the initial list of the restaurants
-    printRestaurantBox = function(doc){
+//Functions to load the initial list of the restaurants
+printRestaurantBox = function(doc){
 
-        var post_block = '<div class="restaurant-box">'
-                            +'<h3 class="restaurant-name">'+ doc.data().name +'</h3>'
-                            +'<p class="restaurant-address">'+doc.data().address+'</p>'
-                            +'<span class="restaurant-rating"><strong>Rating: </strong>'+doc.data().average_rating.toFixed(2)+' <em>('+doc.data().number_rating+' Reviews)</em></span>'
-                            +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="user.openRestaurant(\''+doc.id+'\')" type="button" class="btn btn-primary d-block mt-3">View Details</button>'
-                            +'</div>';
+    var post_block = '<div class="restaurant-box">'
+                        +'<h3 class="restaurant-name">'+ doc.data().name +'</h3>'
+                        +'<p class="restaurant-address">'+doc.data().address+'</p>'
+                        +'<span class="restaurant-rating"><strong>Rating: </strong>'+doc.data().average_rating.toFixed(2)+' <em>('+doc.data().number_rating+' Reviews)</em></span>'
+                        +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="user.openRestaurant(\''+doc.id+'\')" type="button" class="btn btn-primary d-block mt-3">View Details</button>'
+                        +'</div>';
 
-        return post_block;            
+    return post_block;            
 
-        } 
+}
+ 
+
+//Check if fields are empty in restaurant form
+areFieldsEmpty = function(restaurant_name,restaurant_address, type_service,type_food,occasion,dining_option,average_expense,qualtiy_food,ambiance,quality_service,cleanliness,speed_service,value_money,allergy_information){
+
+    if(restaurant_name=="")
+        return true;
+
+    if(restaurant_address=="")
+        return true;
+
+    if(type_service=="")
+        return true;
+
+    if(type_food=="")
+        return true;
+
+    if(occasion=="")
+        return true;
+
+    if(dining_option=="")
+        return true;
+
+    if(average_expense=="")
+        return true;
+
+    if(qualtiy_food=="")
+        return true;
+
+    if(ambiance=="")
+        return true;
+
+    if(quality_service=="")
+        return true;
+
+    if(cleanliness=="")
+        return true;
+
+    if(speed_service=="")
+        return true;
+
+    if(value_money=="")
+        return true;
+
+    if(allergy_information=="")
+        return true;
+    
+
+    }        
