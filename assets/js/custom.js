@@ -186,61 +186,6 @@ printReviewDetails = function(doc,new_class=""){
   return post_block;
 }
 
-//Called when you click on a button in the restaurant list
-function openRestaurant(ID) {
-
-    initial_flag = true;
-
-    $("#restaurant-overlay-container").empty();   //clearing the overlay of previous details
-
-    document.getElementById("myNav").style.width = "95%";
-
-    firestore.collection("Restaurant").doc(ID).get().then((querySnapshot) => {
-        if(querySnapshot && querySnapshot.exists){
-
-            console.log(querySnapshot.data().name);
-            $("#restaurant-overlay-container").prepend(printRestaurantDetails(querySnapshot));
-        }
-    });
-
-    firestore.collection("Reviews").where("restuarant_ID","==",ID).orderBy("time", "desc").get().then((querySnapshot) => {
-
-        if(querySnapshot.empty){
-            $("#overlay_review_list").append('<p class="no-reviews">There are no reviews yet.</p>');
-        }
-
-        querySnapshot.forEach((doc) => {
-    
-            $("#overlay_review_list").append(printReviewDetails(doc));
-
-        });
-    
-    });
-    
-    firestore.collection("Reviews").where("restuarant_ID","==",ID).orderBy("time", "desc").limit(1)
-    .onSnapshot(function(querySnapshot){
-
-        querySnapshot.forEach(function(doc) {
-
-            if(initial_flag == true)
-                initial_flag = false;
-
-            else if(initial_flag == false){
-                if(doc.data().time!=null){
-
-                    console.log(doc.data());
-
-                    $("#overlay_review_list").prepend(printReviewDetails(doc,"realtime-review"));
-
-                    $(".no-reviews").empty();   //removing the there are no reviews for the restaurant text  
-
-                }
-            }                   
-        });        
-
-    });
-
-}
 
 //Update Restaurant Rating when Review is added
 
