@@ -219,6 +219,9 @@
 
     <!--Custom utility functions for the website-->
     <script src="app/config.js"></script>
+
+    <!--Custom utility functions for the website-->
+    <script src="app/user.js"></script>    
     
     <script>
 
@@ -229,36 +232,11 @@
 
       var firestore     = firebase.firestore(); //Reference to database
 
+      const user = new User();
 
+      user.getRestaurants();      
 
-      //Functions to load the initial list of the restaurants
-      printRestaurantBox = function(doc){
-
-        var post_block = '<div class="restaurant-box">'
-                            +'<h3 class="restaurant-name">'+ doc.data().name +'</h3>'
-                            +'<p class="restaurant-address">'+doc.data().address+'</p>'
-                            +'<span class="restaurant-rating"><strong>Rating: </strong>'+doc.data().average_rating.toFixed(2)+' <em>('+doc.data().number_rating+' Reviews)</em></span>'
-                            +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="openRestaurant(\''+doc.id+'\')" type="button" class="btn btn-primary d-block mt-3">View Details</button>'
-                          +'</div>';
-
-        return post_block;            
-
-      }
-
-      firestore.collection("Restaurant").limit(restaurant_pagination).get().then((querySnapshot) => {
-
-        startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
-
-        hideLoadingRestaurantsSpinner();
-
-        querySnapshot.forEach((doc) => {
-
-          $("#restaurant-list").append(printRestaurantBox(doc));
-
-        });
-
-      });
-
+      //This can be deleted. It is for showing restaurant list with averaging rating
       firestore.collection("Restaurant").orderBy("average_rating","desc").limit(restaurant_pagination).get().then((querySnapshot) => {
 
       querySnapshot.forEach((doc) => {
@@ -270,9 +248,6 @@
       });
 
 //----------------End Functions to load the initial list of the reviews
-
-/*Add Review Form*/
-
 
     /*How to tell if a user is logged in*/
     firebase.auth().onAuthStateChanged(function(user) {
@@ -297,49 +272,7 @@
       showLoadingRestaurantsSpinner();
       // EnableLoadMoreButton();
 
-      let filterQuery = firestore.collection("Restaurant");
-
-      const type_food_filter      = document.querySelector("#type_food").value;
-      const occasion              = document.querySelector("#occasion").value;
-      const average_expense       = Number(document.querySelector("#average_expense").value);
-
-      if(type_food_filter!="")
-          filterQuery = filterQuery.where("type_food", "==", type_food_filter);
-      if(occasion!="")
-          filterQuery = filterQuery.where("occasion","==",occasion);
-      if(average_expense!="")
-          filterQuery = filterQuery.where("average_expense", "<=", average_expense);
-
-
-      filterQuery.get()
-      .then(function(querySnapshot) {
-
-          startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
-          //console.log(querySnapshot.docs.length);
-
-          hideLoadingRestaurantsSpinner();
-          
-          if(querySnapshot.docs.length <restaurant_pagination){
-              //disableLoadMoreButton();
-          }
-          
-          if(querySnapshot.docs.length == 0){
-            //console.log("There are no results.")
-            $("#restaurant-list").append('<p class="restaurant-no-results">There are no results for this fiter!</p>');
-          }
-          
-          querySnapshot.forEach(function(doc) {
-
-              // doc.data() is never undefined for query doc snapshots
-              //console.log(doc.id, " => ", doc.data());
-
-              $("#restaurant-list").append(printRestaurantBox(doc));
-              
-          });
-      })
-      .catch(function(error) {
-          console.log("Error getting documents: ", error);
-      });
+      user.filterRestaurants();
 
   });
 
@@ -354,43 +287,7 @@
       showLoadingRestaurantsSpinner();
       // EnableLoadMoreButton();
 
-      let filterQuery = firestore.collection("Restaurant");
-
-      const type_food_filter      = document.querySelector("#type_food").value;
-      const occasion              = document.querySelector("#occasion").value;
-      const average_expense       = Number(document.querySelector("#average_expense").value);
-
-      if(type_food_filter!="")
-          filterQuery = filterQuery.where("type_food", "==", type_food_filter);
-      if(occasion!="")
-          filterQuery = filterQuery.where("occasion","==",occasion);
-      if(average_expense!="")
-          filterQuery = filterQuery.where("average_expense", "<=", average_expense);
-
-      filterQuery = filterQuery.startAfter(startAfterDoc).limit(restaurant_pagination);
-
-
-      filterQuery.get()
-      .then(function(querySnapshot) {
-
-          startAfterDoc = querySnapshot.docs[querySnapshot.docs.length-1];
-          //console.log(querySnapshot.docs.length);
-
-          hideLoadingRestaurantsSpinner();
-          
-          if(querySnapshot.docs.length <restaurant_pagination){
-              disableLoadMoreButton();
-          }
-          
-          querySnapshot.forEach(function(doc) {
-
-              $("#restaurant-list").append(printRestaurantBox(doc));
-              
-          });
-      })
-      .catch(function(error) {
-          console.log("Error getting documents: ", error);
-      });
+      user.loadMoreRestaurants();
 
   });
    

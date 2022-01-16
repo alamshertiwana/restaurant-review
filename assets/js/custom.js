@@ -391,3 +391,17 @@ function showUserReviews(ID){
 }
 
 /*----------- My Revies Page Functions */
+
+    //Functions to load the initial list of the restaurants
+    printRestaurantBox = function(doc){
+
+        var post_block = '<div class="restaurant-box">'
+                            +'<h3 class="restaurant-name">'+ doc.data().name +'</h3>'
+                            +'<p class="restaurant-address">'+doc.data().address+'</p>'
+                            +'<span class="restaurant-rating"><strong>Rating: </strong>'+doc.data().average_rating.toFixed(2)+' <em>('+doc.data().number_rating+' Reviews)</em></span>'
+                            +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="openRestaurant(\''+doc.id+'\')" type="button" class="btn btn-primary d-block mt-3">View Details</button>'
+                            +'</div>';
+
+        return post_block;            
+
+        } 
