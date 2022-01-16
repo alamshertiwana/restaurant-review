@@ -1,3 +1,11 @@
+= Version 0.3.2 =
+
+* Added styles for logo
+* Updated body class on all pages
+* Fixed issue where homepage was showing hidden restaurants
+* Fixed issue where top restaurants page was showing hidden restaurants
+* Added missing files to top restaurants page
+
 = Version 0.3.1 =
 
 *update header on all pages with correct links
