@@ -1,3 +1,7 @@
+= Version 0.2 =
+
+Create a new folder named app and added the file config.js which contains the config details for firebase.
+
 = Version 0.1 =
 
 First Release
