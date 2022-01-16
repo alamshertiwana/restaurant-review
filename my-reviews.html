@@ -107,65 +107,22 @@
     <!--Custom utility functions for the website-->
     <script src="assets/js/custom.js"></script>
 
+    <!--Firebase Config-->
+    <script src="app/config.js"></script>     
+
     <script>
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyBhqI5gPXI7UNbUiswgvTRC3wnD6SELM9c",
-        authDomain: "reviewsystem-b2602.firebaseapp.com",
-        projectId: "reviewsystem-b2602",
-        storageBucket: "reviewsystem-b2602.appspot.com",
-        messagingSenderId: "639222450302",
-        appId: "1:639222450302:web:7dcc07b601af8bcc63f02f"
-      };
-    
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
+    var firestore     = firebase.firestore(); //Reference to database
+    var ui            = new firebaseui.auth.AuthUI(firebase.auth());
+     
 
-      var firestore     = firebase.firestore(); //Reference to database
-      var ui            = new firebaseui.auth.AuthUI(firebase.auth());
-
-      var uiConfig = {
-        callbacks: {
-          signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-            // User successfully signed in.
-            // Return type determines whether we continue the redirect automatically
-            // or whether we leave that to developer to handle.
-            checkUserInDB(authResult.user)
-            return false;
-          },
-          uiShown: function() {
-            // The widget is rendered.
-            // Hide the loader.
-            document.getElementById('loader').style.display = 'none';
-          }
-        },
-        // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-        signInFlow: 'popup',
-        signInSuccessUrl: 'index.html',
-        signInOptions: [
-          {
-            // Leave the lines as is for the providers you want to offer your users.
-            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: false,
-          }
-        ],
-        // Terms of service url.
-        tosUrl: '<your-tos-url>',
-        // Privacy policy url.
-        privacyPolicyUrl: '<your-privacy-policy-url>'
-      };      
-
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    showUserReviews(firebase.auth().currentUser.uid);
-    updateLinksInHeader();
-  } else {
-    // No user is signed in.
-  }
-});
-
-
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        showUserReviews(firebase.auth().currentUser.uid);
+        updateLinksInHeader();
+      } else {
+        // No user is signed in.
+      }
+    });
 
     </script>
     
