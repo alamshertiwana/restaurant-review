@@ -132,6 +132,9 @@
     <!--Firebase Config-->
     <script src="app/config.js"></script> 
 
+    <!--User Class-->
+    <script src="app/user.js"></script>    
+    
     <script>
 
       var firestore     = firebase.firestore(); //Reference to database
@@ -141,7 +144,11 @@
       //The only functions needed on the page to show user details      
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
-          showUserDetails(firebase.auth().currentUser.uid);
+
+          const user_ui = new User();
+
+          user_ui.showUserDetails(firebase.auth().currentUser.uid);           
+                  
           updateLinksInHeader();    
         } else {
           // No user is signed in.

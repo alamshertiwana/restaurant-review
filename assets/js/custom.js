@@ -326,16 +326,6 @@ function printUserDetails(doc){
 
 }
 
-function showUserDetails(ID){
-    firestore.collection("Users").doc(ID).get().then((querySnapshot) => {
-        if(querySnapshot && querySnapshot.exists){
-
-            printUserDetails(querySnapshot);
-            hideLoadingAccountSpinner();               
-
-        }
-    });    
-}
 
 function getUserDetails(ID){
 

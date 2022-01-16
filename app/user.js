@@ -107,5 +107,16 @@ class User {
     });      
   }
 
+  showUserDetails(ID){
+    firestore.collection("Users").doc(ID).get().then((querySnapshot) => {
+        if(querySnapshot && querySnapshot.exists){
+
+            printUserDetails(querySnapshot);
+            hideLoadingAccountSpinner();               
+
+        }
+    });    
+}  
+
 }
 
