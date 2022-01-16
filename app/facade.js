@@ -1,0 +1,6 @@
+class userFacade {
+
+    constructor() {
+    }
+
+} 
