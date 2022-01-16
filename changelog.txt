@@ -1,11 +1,15 @@
+= Version 0.3.1 =
+
+*update header on all pages with correct links
+
 = Version 0.3 =
 
-Added user.js and admin.js classes in the app folder and moved the functionality to them.
+*Added user.js and admin.js classes in the app folder and moved the functionality to them.
 
 = Version 0.2 =
 
-Created a new folder named app and added the file config.js which contains the config details for firebase.
+*Created a new folder named app and added the file config.js which contains the config details for firebase.
 
 = Version 0.1 =
 
-First Release
+*First Release
