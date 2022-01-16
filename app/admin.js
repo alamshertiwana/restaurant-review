@@ -117,5 +117,16 @@ class Admin {
     }      
 
 
-    }      
+    }
+    
+    isAdmin(){
+        firestore.collection("Admin").doc(firebase.auth().currentUser.uid).get().then(function(doc){
+            if(doc && doc.exists){
+                //do nothing
+            }
+            else{
+                window.location.href = "index.html";                
+            }
+        });        
+    }    
 }

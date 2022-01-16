@@ -134,14 +134,16 @@
 
     var firestore     = firebase.firestore(); //Reference to database
     var ui            = new firebaseui.auth.AuthUI(firebase.auth());
-    const admin_ui = new Admin();    
-
+    const admin_ui = new Admin();
+    
       
   firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        updateLinksInHeader();    
+        updateLinksInHeader();
+        admin_ui.isAdmin();
       } else {
         // No user is signed in.
+        window.location.href = "index.html"; 
       }
     });
 

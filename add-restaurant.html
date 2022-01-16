@@ -239,12 +239,15 @@
     <script>
     var firestore     = firebase.firestore(); //Reference to database
     var ui            = new firebaseui.auth.AuthUI(firebase.auth());
+    const admin_redirect = new Admin();
       
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        updateLinksInHeader();    
+        updateLinksInHeader();
+        admin_redirect.isAdmin();            
       } else {
         // No user is signed in.
+        window.location.href = "index.html"; 
       }
     });      
 
