@@ -23,7 +23,7 @@ class userFacade {
         
     }
      
-     checkUserInDB = function(user){
+    checkUserInDB = function(user){
     
     }
       
