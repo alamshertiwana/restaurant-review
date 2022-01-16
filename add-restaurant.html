@@ -227,95 +227,21 @@
     <!--Custom utility functions for the website-->
     <script src="assets/js/custom.js"></script>
 
+    <!--Firebase Config-->
+    <script src="app/config.js"></script>       
+
     <script>
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyBhqI5gPXI7UNbUiswgvTRC3wnD6SELM9c",
-        authDomain: "reviewsystem-b2602.firebaseapp.com",
-        projectId: "reviewsystem-b2602",
-        storageBucket: "reviewsystem-b2602.appspot.com",
-        messagingSenderId: "639222450302",
-        appId: "1:639222450302:web:7dcc07b601af8bcc63f02f"
-      };
-    
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
-
-  var firestore     = firebase.firestore(); //Reference to database
-  var ui            = new firebaseui.auth.AuthUI(firebase.auth());
-
-  var uiConfig = {
-    callbacks: {
-      signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-        // User successfully signed in.
-        // Return type determines whether we continue the redirect automatically
-        // or whether we leave that to developer to handle.
-        checkUserInDB(authResult.user)
-        return false;
-      },
-      uiShown: function() {
-        // The widget is rendered.
-        // Hide the loader.
-        document.getElementById('loader').style.display = 'none';
-      }
-    },
-    // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-    signInFlow: 'popup',
-    signInSuccessUrl: 'index.html',
-    signInOptions: [
-      {
-        // Leave the lines as is for the providers you want to offer your users.
-        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        requireDisplayName: false,
-      }
-    ],
-    // Terms of service url.
-    tosUrl: '<your-tos-url>',
-    // Privacy policy url.
-    privacyPolicyUrl: '<your-privacy-policy-url>'
-  };
+    var firestore     = firebase.firestore(); //Reference to database
+    var ui            = new firebaseui.auth.AuthUI(firebase.auth());
       
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    showUserDetails(firebase.auth().currentUser.uid);
-    updateLinksInHeader();    
-  } else {
-    // No user is signed in.
-  }
-});      
-
-      // The start method will wait until the DOM is loaded.
-      //ui.start('#firebaseui-auth-container', uiConfig);
-
-      checkUserInDB=function(user){
-
-        firestore.collection("Users").doc(user.uid).get().then(function(doc){
-            if(doc && doc.exists){
-                console.log("Document Exists");
-                //Do nothing
-            }
-            else{
-                console.log("Document Does Not Exist");
-                firestore.collection("Users").doc(user.uid).set({
-                    uid: user.uid,
-                    username: user.email,
-                })
-                .then(function() {
-                    console.log("User Added to Database");
-                })
-                .catch(function(error) {
-                    console.error("Error writing document: ", error);                    
-                });
-
-                firebase.auth().currentUser.sendEmailVerification().then(function() {
-                // Email sent.
-                }).catch(function(error) {
-                // An error happened.
-                });                                        
-            }
-        });
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        updateLinksInHeader();    
+      } else {
+        // No user is signed in.
       }
+    });      
+
 
       areFieldsEmpty = function(restaurant_name,restaurant_address, type_service,type_food,occasion,dining_option,average_expense,qualtiy_food,ambiance,quality_service,cleanliness,speed_service,value_money,allergy_information){
 
@@ -426,7 +352,7 @@ firebase.auth().onAuthStateChanged(function(user) {
                   hidden:               false    
               })
               .then((docRef) => {
-                  console.log("Document written with ID: ", docRef.id);
+                  //console.log("Document written with ID: ", docRef.id);
                   $("#restaurant-success").removeClass("d-none");
               })
               .catch((error) => {
@@ -434,56 +360,6 @@ firebase.auth().onAuthStateChanged(function(user) {
               });
             }
       });
-
-/*      
-firestore.collection("Users").add({
-    first: "Ada",
-    last: "Lovelace",
-    born: 1815
-})
-.then((docRef) => {
-    console.log("Document written with ID: ", docRef.id);
-})
-.catch((error) => {
-    console.error("Error adding document: ", error);
-});
-*/
-
-// firestore.collection("Restaurant").add({
-//     name:                 "KFC",
-//     address:                 "KFC",
-//     type_service:         "Fast Food",
-//     type_food:            "American",
-//     occasion:             "Family Meal",    
-//     dining:               "lunch",    //should be an array
-//     average_expense:      7,    
-//     qualtiy_food:         "Good",    
-//     ambiance:             "Cool",    
-//     quality_service:      "Good",    
-//     cleanliness:          "Good",    
-//     speed_service:        "Fast",    
-//     value_money:          "Yes",
-//     allergy_information:  "Yes"    
-// })
-// .then((docRef) => {
-//     console.log("Document written with ID: ", docRef.id);
-// })
-// .catch((error) => {
-//     console.error("Error adding document: ", error);
-// });
-
-// firestore.collection("Reviews").add({
-//     userID:               "cZGFYworR7fM2ofWMwegFm7ZVJV2",
-//     restuarant_ID:        "XDYXK2T4nzlEkeI2Kb0G",
-//     review_text:          "Good Meal! I Like! Yum Yum",
-//     rating:               4
-// })
-// .then((docRef) => {
-//     console.log("Document written with ID: ", docRef.id);
-// })
-// .catch((error) => {
-//     console.error("Error adding document: ", error);
-// });
 
     </script>
     
