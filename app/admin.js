@@ -74,4 +74,19 @@ class Admin {
             });
         }        
     }
+
+    removeReviewText = function(ID,element){
+
+        element.innerHTML = "Processing....";
+    
+        firestore.collection("Reviews").doc(ID).set({
+          review_text: "Removed by Admin",
+        }, 
+        { merge: true }).then(() => {
+          element.innerHTML = "Updated!";
+          element.classList.add("btn-success");
+          element.classList.add("disabled");
+        });
+    
+      }    
 }

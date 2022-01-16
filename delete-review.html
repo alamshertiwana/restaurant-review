@@ -117,7 +117,13 @@
     <script src="assets/js/custom.js"></script>
 
     <!--Firebase Config-->
-    <script src="app/config.js"></script>     
+    <script src="app/config.js"></script>
+    
+    <!--User Class-->
+    <script src="app/user.js"></script>   
+    
+    <!--Admin Class-->
+    <script src="app/admin.js"></script>        
     
     <script>
 
@@ -127,6 +133,7 @@
 
   var firestore     = firebase.firestore(); //Reference to database
   var ui            = new firebaseui.auth.AuthUI(firebase.auth());
+  const admin_ui = new Admin();
       
   firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
@@ -137,22 +144,6 @@
   });
 
 
-  removeReviewText = function(ID,element){
-
-    element.innerHTML = "Processing....";
-
-    firestore.collection("Reviews").doc(ID).set({
-      review_text: "Removed by Admin",
-    }, 
-    { merge: true }).then(() => {
-      element.innerHTML = "Updated!";
-      element.classList.add("btn-success");
-      element.classList.add("disabled");
-    });
-
-  }
-
-
   function printReviewsForRemove(doc,display_name){
       
       var post_block = '<div class="col review-box">'
@@ -160,7 +151,7 @@
                             +'<p class="review-rating"><strong>Rating : </strong> '+ratingToText(doc.data().rating)+'</p>'
                             +'<p class="review-text"><strong>Review : </strong> '+doc.data().review_text+'</p>'
                             +'<p class="review-restaurant"><strong>Restaurant : </strong> '+doc.data().restaurant_name+'</p>'
-                            +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="removeReviewText(\''+doc.id+'\', this)" type="button" class="btn btn-primary d-block mt-3">Remove</button>'
+                            +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="admin_ui.removeReviewText(\''+doc.id+'\', this)" type="button" class="btn btn-primary d-block mt-3">Remove</button>'
                         +'</div>'
     
       return post_block;
