@@ -129,182 +129,24 @@
     <!--Custom utility functions for the website-->
     <script src="assets/js/custom.js"></script>
 
+    <!--Firebase Config-->
+    <script src="app/config.js"></script> 
+
     <script>
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyBhqI5gPXI7UNbUiswgvTRC3wnD6SELM9c",
-        authDomain: "reviewsystem-b2602.firebaseapp.com",
-        projectId: "reviewsystem-b2602",
-        storageBucket: "reviewsystem-b2602.appspot.com",
-        messagingSenderId: "639222450302",
-        appId: "1:639222450302:web:7dcc07b601af8bcc63f02f"
-      };
-    
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
 
       var firestore     = firebase.firestore(); //Reference to database
       var ui            = new firebaseui.auth.AuthUI(firebase.auth());
+     
 
-      var uiConfig = {
-        callbacks: {
-          signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-            // User successfully signed in.
-            // Return type determines whether we continue the redirect automatically
-            // or whether we leave that to developer to handle.
-            checkUserInDB(authResult.user)
-            return false;
-          },
-          uiShown: function() {
-            // The widget is rendered.
-            // Hide the loader.
-            document.getElementById('loader').style.display = 'none';
-          }
-        },
-        // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
-        signInFlow: 'popup',
-        signInSuccessUrl: 'index.html',
-        signInOptions: [
-          {
-            // Leave the lines as is for the providers you want to offer your users.
-            provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: false,
-          }
-        ],
-        // Terms of service url.
-        tosUrl: '<your-tos-url>',
-        // Privacy policy url.
-        privacyPolicyUrl: '<your-privacy-policy-url>'
-      };      
-
-//The only functions needed on the page to show user details      
-firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    showUserDetails(firebase.auth().currentUser.uid);
-    updateLinksInHeader();    
-  } else {
-    // No user is signed in.
-  }
-});
-
-      // document.querySelector("#add_resturant_button").addEventListener("click",function(e){
-      //       e.preventDefault();
-      //       //reset the alert and success on button click
-      //       $("#restaurant-alert").addClass("d-none");
-      //       $("#restaurant-success").addClass("d-none");
-
-      //       let fields = [];
-            
-      //       const restaurant_name     = document.querySelector("#restaurant_name").value;
-      //       const restaurant_address  = document.querySelector("#restaurant_address").value;
-      //       const type_service        = document.querySelector("#type_service").value;
-      //       const type_food           = document.querySelector("#type_food").value;
-      //       const occasion            = document.querySelector("#occasion").value;
-      //       const dining_option       = $('#dining_option').val();
-      //       const average_expense     = document.querySelector("#average_expense").value;
-      //       const qualtiy_food        = document.querySelector("#qualtiy_food").value;
-      //       const ambiance            = document.querySelector("#ambiance").value;
-      //       const quality_service     = document.querySelector("#quality_service").value;
-      //       const cleanliness         = document.querySelector("#cleanliness").value;
-      //       const speed_service       = document.querySelector("#speed_service").value;
-      //       const value_money         = document.querySelector("#value_money").value;
-      //       const allergy_information = document.querySelector("#allergy_information").value;
-
-      //       const FieldsEmpty = areFieldsEmpty(restaurant_name,restaurant_address, type_service,type_food,occasion,dining_option,average_expense,qualtiy_food,ambiance,quality_service,cleanliness,speed_service,value_money,allergy_information);
-
-      //       if(FieldsEmpty){
-      //         $("#restaurant-alert").removeClass("d-none");
-      //       }
-      //       else{
-              
-      //         $("#restaurant-alert").addClass("d-none");
-
-      //         firestore.collection("Restaurant").add({
-      //             name:                 restaurant_name,
-      //             address:              restaurant_address,
-      //             type_service:         type_service,
-      //             type_food:            type_food,
-      //             occasion:             occasion,    
-      //             dining:               dining_option,    //should be an array
-      //             average_expense:      average_expense,    
-      //             quality_food:         qualtiy_food,    
-      //             ambiance:             ambiance,    
-      //             quality_service:      quality_service,    
-      //             cleanliness:          cleanliness,    
-      //             speed_service:        speed_service,    
-      //             value_money:          value_money,
-      //             allergy_information:  allergy_information    
-      //         })
-      //         .then((docRef) => {
-      //             console.log("Document written with ID: ", docRef.id);
-      //             $("#restaurant-success").removeClass("d-none");
-      //         })
-      //         .catch((error) => {
-      //             console.error("Error adding document: ", error);
-      //         });
-      //       }
-      // });
-
-/*      
-firestore.collection("Users").add({
-    first: "Ada",
-    last: "Lovelace",
-    born: 1815
-})
-.then((docRef) => {
-    console.log("Document written with ID: ", docRef.id);
-})
-.catch((error) => {
-    console.error("Error adding document: ", error);
-});
-*/
-
-// firestore.collection("Restaurant").add({
-//     name:                 "KFC",
-//     address:                 "KFC",
-//     type_service:         "Fast Food",
-//     type_food:            "American",
-//     occasion:             "Family Meal",    
-//     dining:               "lunch",    //should be an array
-//     average_expense:      7,    
-//     qualtiy_food:         "Good",    
-//     ambiance:             "Cool",    
-//     quality_service:      "Good",    
-//     cleanliness:          "Good",    
-//     speed_service:        "Fast",    
-//     value_money:          "Yes",
-//     allergy_information:  "Yes"    
-// })
-// .then((docRef) => {
-//     console.log("Document written with ID: ", docRef.id);
-// })
-// .catch((error) => {
-//     console.error("Error adding document: ", error);
-// });
-
-// firestore.collection("Reviews").add({
-//     userID:               "cZGFYworR7fM2ofWMwegFm7ZVJV2",
-//     restuarant_ID:        "XDYXK2T4nzlEkeI2Kb0G",
-//     review_text:          "Good Meal! I Like! Yum Yum",
-//     rating:               4
-// })
-// .then((docRef) => {
-//     console.log("Document written with ID: ", docRef.id);
-// })
-// .catch((error) => {
-//     console.error("Error adding document: ", error);
-// });
-
-
-
-
-//------------------------The thing that I need to check often
-// firestore.collection("Users").get().then((querySnapshot) => {
-//     querySnapshot.forEach((doc) => {
-//         console.log(`${doc.id} => ${doc.data()}`);
-//     });
-// });
+      //The only functions needed on the page to show user details      
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          showUserDetails(firebase.auth().currentUser.uid);
+          updateLinksInHeader();    
+        } else {
+          // No user is signed in.
+        }
+      });
 
     </script>
     
