@@ -172,7 +172,106 @@ showUserReviews(ID){
             // });                                        
         }
     });
-  } 
+  }
+  
+  openRestaurant(ID) {
+
+    initial_flag = true;
+
+    $("#restaurant-overlay-container").empty();   //clearing the overlay of previous details
+
+    document.getElementById("myNav").style.width = "95%";
+
+    firestore.collection("Restaurant").doc(ID).get().then((querySnapshot) => {
+        if(querySnapshot && querySnapshot.exists){
+
+            console.log(querySnapshot.data().name);
+            $("#restaurant-overlay-container").prepend(printRestaurantDetails(querySnapshot));
+        }
+    });
+
+    firestore.collection("Reviews").where("restuarant_ID","==",ID).orderBy("time", "desc").get().then((querySnapshot) => {
+
+        if(querySnapshot.empty){
+            $("#overlay_review_list").append('<p class="no-reviews">There are no reviews yet.</p>');
+        }
+
+        querySnapshot.forEach((doc) => {
+    
+            $("#overlay_review_list").append(printReviewDetails(doc));
+
+        });
+    
+    });
+    
+    firestore.collection("Reviews").where("restuarant_ID","==",ID).orderBy("time", "desc").limit(1)
+    .onSnapshot(function(querySnapshot){
+
+        querySnapshot.forEach(function(doc) {
+
+            if(initial_flag == true)
+                initial_flag = false;
+
+            else if(initial_flag == false){
+                if(doc.data().time!=null){
+
+                    console.log(doc.data());
+
+                    $("#overlay_review_list").prepend(printReviewDetails(doc,"realtime-review"));
+
+                    $(".no-reviews").empty();   //removing the there are no reviews for the restaurant text  
+
+                }
+            }                   
+        });        
+
+    });
+
+    }
+    
+ addRestaurantReview(resturant_ID,restaurant_name){
+
+    showAddingReviewSpinner();
+
+    //Reset Alerts
+    $("#add-review-alert").addClass("d-none");
+    $("#add-review-success").addClass("d-none");    
+    
+    const review            = document.querySelector("#user_review").value;
+    const rating            = document.querySelector("#review_rating").value;
+    const user_ID           = firebase.auth().currentUser.uid;
+    const reviewer_name     = firebase.auth().currentUser.displayName;
+
+    if(review == "" || rating == ""){
+        hideAddingReviewSpinner();        
+        $("#add-review-alert").removeClass("d-none");
+        return;
+    }
+
+    firestore.collection("Reviews").add({
+        user_ID:                user_ID,
+        restuarant_ID:          resturant_ID,
+        review_text:            review,
+        rating:                 Number(rating),
+        restaurant_name :       restaurant_name,
+        reviewer_name :         reviewer_name,
+        time :                  firebase.firestore.FieldValue.serverTimestamp(),
+    })
+    .then((docRef) => {
+
+        updateRestaurantRating(resturant_ID,Number(rating))
+
+        hideAddingReviewSpinner();
+
+        document.getElementById('add-review-form').reset();
+        
+        $("#add-review-success").removeClass("d-none");        
+    })
+    .catch((error) => {
+        console.error("Error adding document: ", error);
+    });     
+
+}    
 
 }
 

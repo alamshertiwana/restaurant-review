@@ -158,7 +158,7 @@ printRestaurantDetails = function(doc){
                                 +'<option value="2">Poor</option>'
                                 +'<option value="1">Terible</option>'
                             +'</select>'
-                            +'<button id="add_review_button" type="button" onclick="addRestaurantReview(\''+doc.id+'\',\''+doc.data().name+'\')" class="btn btn-primary mb-3">Submit</button>'
+                            +'<button id="add_review_button" type="button" onclick="user.addRestaurantReview(\''+doc.id+'\',\''+doc.data().name+'\')" class="btn btn-primary mb-3">Submit</button>'
                         +'</form>'
                         +'<div class="alert alert-warning d-none" id="add-review-alert" role="alert">Please Make Sure All Fields Are Filled!</div>'
                         +'<div class="alert alert-success d-none" id="add-review-success" role="alert">Review added Successfully!</div>'
@@ -272,51 +272,6 @@ updateRestaurantRating = function(ID,review_rating){
     });
 }
 
-//Adding a Review of Restaurant to the Firstore Database
-function addRestaurantReview(resturant_ID,restaurant_name){
-
-    showAddingReviewSpinner();
-
-    //Reset Alerts
-    $("#add-review-alert").addClass("d-none");
-    $("#add-review-success").addClass("d-none");    
-    
-    const review            = document.querySelector("#user_review").value;
-    const rating            = document.querySelector("#review_rating").value;
-    const user_ID           = firebase.auth().currentUser.uid;
-    const reviewer_name     = firebase.auth().currentUser.displayName;
-
-    if(review == "" || rating == ""){
-        hideAddingReviewSpinner();        
-        $("#add-review-alert").removeClass("d-none");
-        return;
-    }
-
-    firestore.collection("Reviews").add({
-        user_ID:                user_ID,
-        restuarant_ID:          resturant_ID,
-        review_text:            review,
-        rating:                 Number(rating),
-        restaurant_name :       restaurant_name,
-        reviewer_name :         reviewer_name,
-        time :                  firebase.firestore.FieldValue.serverTimestamp(),
-    })
-    .then((docRef) => {
-
-        updateRestaurantRating(resturant_ID,Number(rating))
-
-        hideAddingReviewSpinner();
-
-        document.getElementById('add-review-form').reset();
-        
-        $("#add-review-success").removeClass("d-none");        
-    })
-    .catch((error) => {
-        console.error("Error adding document: ", error);
-    });     
-
-}
-
 /*My Account Details Functions to fetch details and display them on the form*/
 function printUserDetails(doc){
 
@@ -364,7 +319,7 @@ function printReviewUser(doc,display_name){
                             +'<h3 class="restaurant-name">'+ doc.data().name +'</h3>'
                             +'<p class="restaurant-address">'+doc.data().address+'</p>'
                             +'<span class="restaurant-rating"><strong>Rating: </strong>'+doc.data().average_rating.toFixed(2)+' <em>('+doc.data().number_rating+' Reviews)</em></span>'
-                            +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="openRestaurant(\''+doc.id+'\')" type="button" class="btn btn-primary d-block mt-3">View Details</button>'
+                            +'<button id="restaurant-button" href="#" data-doc-id="'+doc.id+'" onclick="user.openRestaurant(\''+doc.id+'\')" type="button" class="btn btn-primary d-block mt-3">View Details</button>'
                             +'</div>';
 
         return post_block;            
